@@ -26,10 +26,10 @@ présenter comme opérationnelles.
 
 ## Données serveur
 
-Le schéma PostgreSQL de départ se trouve dans `prisma/schema.prisma`. Copiez
-`.env.example` vers `.env`, renseignez une instance PostgreSQL, puis exécutez
-`npx prisma generate` et `npx prisma migrate dev --name init` lorsque la CLI
-Prisma est disponible dans votre environnement.
+Le schéma PostgreSQL de départ se trouve dans `prisma/schema.prisma` et la
+connexion Prisma 7 dans `prisma.config.ts`. Copiez `.env.example` vers `.env`,
+renseignez une instance PostgreSQL, puis exécutez `npx prisma generate` et
+`npx prisma migrate dev --name init`.
 
 L'authentification réelle requiert encore le choix d'un fournisseur compatible
 avec votre déploiement (par exemple Auth.js ou Clerk). Elle ne sera pas simulée.
