@@ -57,6 +57,9 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Sidebar mobile drawer
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   // Create project modal
   const [showCreate, setShowCreate] = useState(false);
   const [newName, setNewName] = useState("");
@@ -114,7 +117,7 @@ export default function Home() {
     }
   }
 
-  // --- Loading state (Clerk not loaded yet) ---
+  // --- Loading state ---
   if (!isLoaded) {
     return (
       <div className="landing-shell">
@@ -126,7 +129,7 @@ export default function Home() {
     );
   }
 
-  // --- Not signed in: show Clerk sign-in ---
+  // --- Not signed in ---
   if (!isSignedIn) {
     return (
       <div className="landing-shell">
@@ -141,21 +144,36 @@ export default function Home() {
     );
   }
 
-  // --- Signed in: show real dashboard ---
+  // --- Signed in ---
   const firstName = user?.firstName || "there";
   const initials = [user?.firstName?.[0], user?.lastName?.[0]].filter(Boolean).join("").toUpperCase() || "U";
 
   return (
     <div className="app-shell">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="sidebar-overlay visible"
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="sidebar">
-        <a className="brand" href="/"><span>AB</span><b>YZ</b></a>
+      <aside className={`sidebar${sidebarOpen ? " open" : ""}`}>
+        <a className="brand" href="/" onClick={() => setSidebarOpen(false)}>
+          <span>AB</span><b>YZ</b>
+        </a>
         <nav>
           <p>WORKSPACE</p>
-          <button className="active"><span>Projects</span></button>
+          <button className="active" onClick={() => setSidebarOpen(false)}>
+            <span>Projects</span>
+          </button>
         </nav>
         <div className="side-bottom">
-          <button onClick={() => setShowCreate(true)}>＋ <span>New project</span></button>
+          <button onClick={() => { setSidebarOpen(false); setShowCreate(true); }}>
+            ＋ <span>New project</span>
+          </button>
           <div className="profile">
             <b>{initials}</b>
             <span>
@@ -169,8 +187,17 @@ export default function Home() {
       {/* Main */}
       <main>
         <header className="topbar">
-          <div className="crumbs">
-            <strong>Projects</strong>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, minWidth: 0, flex: 1 }}>
+            <button
+              className="hamburger"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
+            <div className="crumbs">
+              <strong>Projects</strong>
+            </div>
           </div>
           <div>
             <AuthControls />
@@ -181,7 +208,10 @@ export default function Home() {
           <header className="heading">
             <div>
               <p>PROJECTS</p>
-              <h1>Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"}, {firstName}.</h1>
+              <h1>
+                Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 18 ? "afternoon" : "evening"},{" "}
+                {firstName}.
+              </h1>
               <span>{projects.length} project{projects.length !== 1 ? "s" : ""} in your workspace</span>
             </div>
             <div>
@@ -193,11 +223,11 @@ export default function Home() {
           {loading && (
             <div className="projects-grid">
               {[1, 2, 3].map((i) => (
-                <article key={i} className="project-card skeleton-card">
+                <div key={i} className="project-card skeleton-card">
                   <div className="skeleton-line w60" />
                   <div className="skeleton-line w80" />
                   <div className="skeleton-line w40" />
-                </article>
+                </div>
               ))}
             </div>
           )}
@@ -230,13 +260,14 @@ export default function Home() {
                   key={project.id}
                   href={`/projects/${project.id}`}
                   className="project-card"
-                  style={{ textDecoration: "none", color: "inherit" }}
                 >
                   <div>
                     <small className={`stage-badge ${STAGE_COLORS[project.stage] || ""}`}>
                       {STAGE_LABELS[project.stage] || project.stage}
                     </small>
-                    <span className="project-type">{PROJECT_TYPES.find((t) => t.value === project.type)?.label || project.type}</span>
+                    <span className="project-type">
+                      {PROJECT_TYPES.find((t) => t.value === project.type)?.label || project.type}
+                    </span>
                   </div>
                   <h2>{project.name}</h2>
                   {project.description && <p>{project.description}</p>}

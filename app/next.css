@@ -1,11 +1,12 @@
-/* ── Next.js-specific overrides ───────────────────────────────── */
+/* ── Next.js page-specific styles ─────────────────────────── */
 
-/* ── Landing / Sign-in page ─────────────────────────────────── */
+/* ── Landing / Sign-in ───────────────────────────────────── */
 .landing-shell {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
+  padding: 20px;
   background:
     radial-gradient(ellipse at 50% 0%, #1e1145 0%, transparent 55%),
     radial-gradient(ellipse at 80% 100%, #0c1a3a 0%, transparent 45%),
@@ -17,6 +18,8 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  width: 100%;
+  max-width: 480px;
   animation: fadeUp 0.6s ease-out both;
 }
 
@@ -26,7 +29,7 @@
 }
 
 .brand-large {
-  font-size: 42px;
+  font-size: clamp(32px, 8vw, 42px);
   letter-spacing: -3px;
   color: #fff;
   margin-bottom: 4px;
@@ -45,10 +48,14 @@
   font-size: 15px;
   margin: 0 0 28px;
   letter-spacing: -0.01em;
+  text-align: center;
 }
 
 .clerk-signin-wrap {
   animation: fadeUp 0.7s 0.15s ease-out both;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .loading-pulse {
@@ -62,13 +69,13 @@
 
 @keyframes pulse {
   0%, 100% { opacity: 0.25; transform: scale(0.85); }
-  50%      { opacity: 0.7;  transform: scale(1); }
+  50%       { opacity: 0.7;  transform: scale(1); }
 }
 
-/* ── Projects grid ──────────────────────────────────────────── */
+/* ── Projects grid ──────────────────────────────────────── */
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
   gap: 16px;
 }
 
@@ -83,6 +90,9 @@
   background: linear-gradient(145deg, #171d2b, #111621);
   transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
+  /* Prevent card content from overflowing */
+  overflow: hidden;
+  word-break: break-word;
 }
 
 .project-card:hover {
@@ -96,6 +106,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+  gap: 8px;
 }
 
 .stage-badge {
@@ -106,6 +117,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .stage-badge.violet { background: #292342; color: #c4b5fd; }
@@ -116,11 +128,14 @@
 .project-type {
   color: var(--dim);
   font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .project-card h2 {
   margin: 0 0 8px;
-  font-size: 21px;
+  font-size: clamp(17px, 3vw, 21px);
   letter-spacing: -0.03em;
 }
 
@@ -137,6 +152,8 @@
   align-items: center;
   padding-top: 14px;
   border-top: 1px solid #ffffff0a;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .project-updated {
@@ -144,13 +161,13 @@
   font-size: 11px;
 }
 
-/* ── Empty state ────────────────────────────────────────────── */
+/* ── Empty state ────────────────────────────────────────── */
 .empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 80px 20px;
+  padding: 60px 20px;
   text-align: center;
   animation: fadeUp 0.5s ease-out both;
 }
@@ -165,11 +182,12 @@
   color: #c4b5fd;
   font-size: 28px;
   margin-bottom: 24px;
+  flex-shrink: 0;
 }
 
 .empty-state h2 {
   margin: 0 0 10px;
-  font-size: 24px;
+  font-size: clamp(18px, 4vw, 24px);
   letter-spacing: -0.03em;
 }
 
@@ -181,13 +199,14 @@
   line-height: 1.55;
 }
 
-/* ── Skeleton loading ───────────────────────────────────────── */
+/* ── Skeleton loading ───────────────────────────────────── */
 .skeleton-card {
   min-height: 160px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   padding: 28px !important;
+  cursor: default;
 }
 
 .skeleton-line {
@@ -207,7 +226,7 @@
   100% { background-position: -200% 0; }
 }
 
-/* ── Create project dialog ──────────────────────────────────── */
+/* ── Create project dialog ──────────────────────────────── */
 .dialog-backdrop {
   position: fixed;
   inset: 0;
@@ -216,6 +235,7 @@
   place-items: center;
   background: #03050bcc;
   animation: fadeIn 0.2s ease-out;
+  padding: 16px;
 }
 
 @keyframes fadeIn {
@@ -225,7 +245,7 @@
 
 .dialog-open {
   position: relative;
-  width: min(450px, calc(100% - 32px));
+  width: min(450px, 100%);
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -242,7 +262,7 @@
 
 .dialog-open form {
   position: relative;
-  padding: 29px;
+  padding: 24px;
 }
 
 .dialog-open p {
@@ -254,8 +274,8 @@
 }
 
 .dialog-open h2 {
-  margin: 10px 0 25px;
-  font-size: 23px;
+  margin: 10px 0 20px;
+  font-size: clamp(18px, 4vw, 23px);
   letter-spacing: -0.04em;
 }
 
@@ -296,8 +316,8 @@
 
 .dialog-open .x {
   position: absolute;
-  right: 17px;
-  top: 15px;
+  right: 14px;
+  top: 14px;
   background: transparent;
   color: var(--muted);
   font-size: 20px;
@@ -310,7 +330,8 @@
   justify-content: flex-end;
   gap: 8px;
   padding: 0;
-  margin: 24px 0 0;
+  margin: 20px 0 0;
+  flex-wrap: wrap;
 }
 
 .dialog-open .primary:disabled {
@@ -318,17 +339,80 @@
   cursor: not-allowed;
 }
 
-/* ── Responsive ─────────────────────────────────────────────── */
-@media (max-width: 760px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
+/* ── Workspace page extras ──────────────────────────────── */
+/* Project header on workspace page: badge row + title + desc */
+.ws-project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
 
-  .landing-center {
-    padding: 0 20px;
-  }
+.ws-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-  .brand-large {
-    font-size: 36px;
+.ws-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .ws-heading {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .ws-heading > div:last-child { flex-shrink: 0; }
+}
+
+/* ThinkPad textarea fill */
+.ws-textarea {
+  flex: 1;
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  min-height: 300px;
+}
+
+.ws-editor-inner {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+  height: calc(100% - 43px);
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .ws-editor-inner {
+    height: auto;
+    padding: 16px;
+  }
+  .ws-textarea {
+    min-height: 240px;
   }
 }
+
+/* Responsive: on mobile hide the "← Retour" text, keep icon */
+@media (max-width: 480px) {
+  .back-label { display: none; }
+}
+
+/* Responsive: on mobile hide the "← Retour" text, keep icon */
+@media (max-width: 480px) {
+  .back-label { display: none; }
+}
+
