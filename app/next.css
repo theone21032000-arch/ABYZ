@@ -1,0 +1,13 @@
+.thinkpad-editor {
+  width: 100%;
+  height: calc(100% - 43px);
+  resize: none;
+  border: 0;
+  padding: 40px clamp(28px, 6vw, 75px);
+  background: #131924;
+  color: #f1f5f9;
+  font: 16px/1.7 Inter, Arial, sans-serif;
+  outline: none;
+}
+
+.thinkpad-editor:focus { box-shadow: inset 3px 0 #8b5cf6; }

@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ProjectType {
+  WEBSITE
+  WEB_APP
+  MOBILE_APP
+  DASHBOARD
+  API
+  INTERNAL_TOOL
+  OTHER
+}
+
+enum ProjectStage {
+  IDEA
+  IN_DESIGN
+  SPECIFICATIONS_READY
+  EXISTING_CODE
+}
+
+enum ThoughtBlockType {
+  IDEA
+  OBJECTIVE
+  USER
+  PAGE
+  FEATURE
+  BUSINESS_RULE
+  DATA
+  INTERACTION
+  DESIGN
+  CONSTRAINT
+  QUESTION
+  DECISION
+  TEST
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+}
+
+model Project {
+  id          String       @id @default(cuid())
+  name        String
+  description String?
+  type        ProjectType
+  stage       ProjectStage @default(IDEA)
+  ownerId     String
+  owner       User         @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  thoughts    Thought[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([ownerId, updatedAt])
+}
+
+model Thought {
+  id        String           @id @default(cuid())
+  projectId String
+  project   Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type      ThoughtBlockType
+  content   String
+  position  Int              @default(0)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([projectId, position])
+}
