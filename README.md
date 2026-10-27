@@ -31,5 +31,9 @@ connexion Prisma 7 dans `prisma.config.ts`. Copiez `.env.example` vers `.env`,
 renseignez une instance PostgreSQL, puis exécutez `npx prisma generate` et
 `npx prisma migrate dev --name init`.
 
+Le client Neon est initialisé à la demande dans `src/lib/database.ts` afin que
+le build ne tente jamais de se connecter. Il refuse explicitement l'URL modèle
+présente dans `.env.example`.
+
 L'authentification réelle requiert encore le choix d'un fournisseur compatible
 avec votre déploiement (par exemple Auth.js ou Clerk). Elle ne sera pas simulée.
