@@ -9,6 +9,17 @@ export function listProjectsForUser(clerkUserId: string) {
   });
 }
 
+export function getProjectByIdForUser(id: string, clerkUserId: string) {
+  return getPrisma().project.findFirst({
+    where: { id, ownerId: clerkUserId },
+    include: {
+      thoughts: {
+        orderBy: { position: "asc" }
+      }
+    }
+  });
+}
+
 export function createProjectForUser(clerkUserId: string, input: CreateProjectInput) {
   return getPrisma().project.create({
     data: { ...input, ownerId: clerkUserId }
