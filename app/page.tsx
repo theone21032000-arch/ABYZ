@@ -161,9 +161,18 @@ export default function Home() {
 
       {/* Sidebar */}
       <aside className={`sidebar${sidebarOpen ? " open" : ""}`}>
-        <a className="brand" href="/" onClick={() => setSidebarOpen(false)}>
-          <span>AB</span><b>YZ</b>
-        </a>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+          <a className="brand" href="/" onClick={() => setSidebarOpen(false)} style={{ margin: 0 }}>
+            <span>AB</span><b>YZ</b>
+          </a>
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Fermer le menu"
+          >
+            ✕
+          </button>
+        </div>
         <nav>
           <p>WORKSPACE</p>
           <button className="active" onClick={() => setSidebarOpen(false)}>

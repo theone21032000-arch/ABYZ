@@ -55,6 +55,21 @@ button:focus-visible, [contenteditable]:focus-visible {
   overflow-y: auto;
 }
 
+.sidebar-close-btn {
+  display: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid var(--line);
+}
+.sidebar-close-btn:hover {
+  background: #202a3a;
+  color: var(--text);
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -735,23 +750,38 @@ menu { display: flex; justify-content: flex-end; gap: 8px; padding: 0; margin: 2
 
 /* ── Mobile: ≤768px ────────────────────────────────────────── */
 @media (max-width: 768px) {
-  /* Sidebar: off-canvas drawer */
+  /* Sidebar: off-canvas full-screen drawer */
   .sidebar {
     position: fixed;
-    z-index: 8;
-    left: calc(-1 * var(--sidebar-w) - 20px);
+    z-index: 50;
+    left: -100%;
     top: 0;
     height: 100vh;
-    width: var(--sidebar-w);
-    transition: left 0.25s ease;
+    height: 100dvh;
+    width: 100%;
+    max-width: 100%;
+    background: #0d1017;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     overflow-y: auto;
+    border-right: none;
+    box-shadow: none;
   }
   .sidebar.open {
     left: 0;
-    box-shadow: 20px 0 50px #0008;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  }
+  .sidebar-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
   .sidebar-overlay.visible {
     display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: rgba(3, 5, 11, 0.75);
+    backdrop-filter: blur(2px);
   }
 
   /* Main takes full width */
@@ -775,25 +805,62 @@ menu { display: flex; justify-content: flex-end; gap: 8px; padding: 0; margin: 2
   .heading { flex-direction: column !important; align-items: flex-start !important; gap: 12px; }
   .heading h1 { font-size: clamp(18px, 5vw, 24px); }
 
-  /* ThinkPad: single column stack */
+  /* ThinkPad: blocks en haut en 3 colonnes, zone de travail en dessous full width */
   .thinkpad {
     display: flex;
     flex-direction: column;
     height: auto;
     min-height: 0;
+    width: 100%;
   }
   .blocks {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 12px;
+    display: block;
+    padding: 14px;
     border-right: 0;
     border-bottom: 1px solid var(--line);
-    position: static; /* remove relative so footer doesn't overlap */
+    position: static;
+    width: 100%;
   }
-  .blocks footer { display: none; } /* hide in mobile stacked mode */
-  .block-button { width: auto; padding: 6px 10px; font-size: 11px; }
-  .editor-wrap { min-height: 50vh; }
+  .blocks .label {
+    margin-bottom: 10px;
+    padding: 0 2px 8px;
+  }
+  #block-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .block-button {
+    width: 100%;
+    padding: 10px 6px;
+    font-size: 11px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    background: #151b27;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .block-button span {
+    display: block !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .block-button:hover {
+    background: #202a3a;
+  }
+  .blocks footer { display: none; }
+
+  .editor-wrap {
+    min-height: auto;
+    width: 100%;
+  }
   .editor { padding: 20px 16px; }
   .editor h2 { font-size: clamp(18px, 5vw, 24px); }
 
@@ -843,8 +910,15 @@ menu { display: flex; justify-content: flex-end; gap: 8px; padding: 0; margin: 2
 
 /* ── Very small: ≤400px ────────────────────────────────────── */
 @media (max-width: 400px) {
-  .block-button span { display: none; } /* icon only on tiny screens */
   .topbar { padding: 0 12px; }
   .view { padding: 16px 12px; }
   .blueprint article { padding: 16px 12px; }
+  #block-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .block-button {
+    padding: 8px 4px;
+    font-size: 10px;
+  }
 }

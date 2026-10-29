@@ -165,9 +165,18 @@ export default function ProjectWorkspacePage({
 
       {/* Sidebar */}
       <aside className={`sidebar${sidebarOpen ? " open" : ""}`}>
-        <Link className="brand" href="/" onClick={() => setSidebarOpen(false)}>
-          <span>AB</span><b>YZ</b>
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+          <Link className="brand" href="/" onClick={() => setSidebarOpen(false)} style={{ margin: 0 }}>
+            <span>AB</span><b>YZ</b>
+          </Link>
+          <button
+            className="sidebar-close-btn"
+            onClick={() => setSidebarOpen(false)}
+            aria-label="Fermer le menu"
+          >
+            ✕
+          </button>
+        </div>
 
         {/* Active project indicator */}
         <Link href="/" className="switcher" onClick={() => setSidebarOpen(false)}>
